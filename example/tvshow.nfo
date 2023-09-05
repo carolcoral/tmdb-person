@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<tvshow>
+  <plot><![CDATA[温婉可人、处事低调的业内顶尖配音演员时宜，一日在机场偶遇了儒雅的海归化学教授周生辰，两人一见如故颇有眼缘，短暂交往后彼此都留下了深刻印象。为了拯救日渐没落的紫砂壶工厂，周生辰答应母亲的 条件，订婚承业。他婉拒了家里安排，向颇有好感的时宜提出了订婚的请求。时宜内心早已认定 ，欣然答应。点滴相处中，两人默契逐渐产生，两颗心慢慢靠近。周生辰为了振兴家乡的紫砂壶工艺，与长辈产生了经营理念上的巨大分歧，面对亲情和事业的两难境地，幸得时宜始终相伴，并给予了最坚实的支持和鼓励，两人最终携手最大程度地保全了传统手工艺。风雨过后，情意更为深重。然而此时，时宜为了救周生辰遭奸人陷害，身受重伤重度昏迷。周生辰暂时放下事业悉心陪伴照料，终将爱妻唤醒，两人约定相伴此生此世永不分离。]]></plot>
+  <outline><![CDATA[温婉可人、处事低调的业内顶尖配音演员时宜，一日在机场偶遇了儒雅的海归化学教授周生辰，两人一见如故颇有眼缘，短暂交往后彼此都留下了深刻印象。为了拯救日渐没落的紫砂壶工厂，周生辰答应母亲的 条件，订婚承业。他婉拒了家里安排，向颇有好感的时宜提出了订婚的请求。时宜内心早已认定 ，欣然答应。点滴相处中，两人默契逐渐产生，两颗心慢慢靠近。周生辰为了振兴家乡的紫砂壶工艺，与长辈产生了经营理念上的巨大分歧，面对亲情和事业的两难境地，幸得时宜始终相伴，并给予了最坚实的支持和鼓励，两人最终携手最大程度地保全了传统手工艺。风雨过后，情意更为深重。然而此时，时宜为了救周生辰遭奸人陷害，身受重伤重度昏迷。周生辰暂时放下事业悉心陪伴照料，终将爱妻唤醒，两人约定相伴此生此世永不分离。]]></outline>
+  <lockdata>false</lockdata>
+  <dateadded>2023-09-02 22:49:29</dateadded>
+  <title>一生一世</title>
+  <originaltitle>一生一世</originaltitle>
+  <actor>
+    <name>Ren Jialun</name>
+    <role>Zhousheng Chen</role>
+    <type>Actor</type>
+    <tmdbid>2084465</tmdbid>
+  </actor>
+  <actor>
+    <name>Bai Lu</name>
+    <role>Shi Yi</role>
+    <type>Actor</type>
+    <tmdbid>1879666</tmdbid>
+  </actor>
+  <actor>
+    <name>Ci Sha</name>
+    <role>Mei Xing</role>
+    <type>Actor</type>
+    <tmdbid>3167855</tmdbid>
+  </actor>
+  <actor>
+    <name>Wang Yueyi</name>
+    <role>Hong Xiaoyu</role>
+    <type>Actor</type>
+    <tmdbid>3161424</tmdbid>
+  </actor>
+  <actor>
+    <name>Luo Mingjie</name>
+    <role>Zhou Wenchuan</role>
+    <type>Actor</type>
+    <tmdbid>2359338</tmdbid>
+  </actor>
+  <actor>
+    <name>Wang Ruixin</name>
+    <role>Zhou Wenxing</role>
+    <type>Actor</type>
+    <tmdbid>3177467</tmdbid>
+  </actor>
+  <actor>
+    <name>Luo Haiqiong</name>
+    <role>Qin Wan</role>
+    <type>Actor</type>
+    <tmdbid>1363325</tmdbid>
+  </actor>
+  <actor>
+    <name>Feng Jia-Yi</name>
+    <role>Zhou Shengxing</role>
+    <type>Actor</type>
+    <tmdbid>1613707</tmdbid>
+  </actor>
+  <actor>
+    <name>Wang Xiwen</name>
+    <type>Actor</type>
+    <tmdbid>3177468</tmdbid>
+  </actor>
+  <actor>
+    <name>Ye Xiaowei</name>
+    <type>Actor</type>
+    <tmdbid>2790196</tmdbid>
+  </actor>
+  <actor>
+    <name>Liu Ruogu</name>
+    <role>Zhou Shengren</role>
+    <type>Actor</type>
+    <tmdbid>2747081</tmdbid>
+  </actor>
+  <director tmdbid="2665899">Shen Yang</director>
+  <trailer>http://www.youtube.com/watch?v=ZGymduZZhqg</trailer>
+  <rating>7.4</rating>
+  <year>2021</year>
+  <sorttitle>一生一世</sorttitle>
+  <imdb_id>tt14324128</imdb_id>
+  <tmdbid>130107</tmdbid>
+  <premiered>2021-09-06</premiered>
+  <releasedate>2021-09-06</releasedate>
+  <enddate>2021-10-03</enddate>
+  <runtime>50</runtime>
+  <genre>剧情</genre>
+  <studio>iQiyi</studio>
+  <uniqueid type="imdb">tt14324128</uniqueid>
+  <uniqueid type="tmdb">130107</uniqueid>
+  <uniqueid type="tvdb">402985</uniqueid>
+  <tvdbid>402985</tvdbid>
+  <episodeguide>{"imdb":"tt14324128","tmdb":"130107","tvdb":"402985"}</episodeguide>
+  <id>402985</id>
+  <season>-1</season>
+  <episode>-1</episode>
+  <displayorder>aired</displayorder>
+  <status>Ended</status>
+</tvshow>
