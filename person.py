@@ -53,7 +53,7 @@ class Analyze:
 
 
 class Tmdb:
-    def __init__(self, tmdb_id, actor_path, tmdb_token):
+    def __init__(self, tmdb_id, actor_path, tmdb_token, language="zh-CN"):
         self.image_path = None
         self.tmdb_id = tmdb_id
         self.actor_path = actor_path
@@ -61,9 +61,10 @@ class Tmdb:
             "accept": "application/json",
             "Authorization": "Bearer " + tmdb_token
         }
+        self.language = language
 
     def get_actor_info(self):
-        url = "https://api.themoviedb.org/3/person/" + self.tmdb_id + "?language=zh-CN"
+        url = "https://api.themoviedb.org/3/person/" + self.tmdb_id + "?language=" + self.language
         headers = self.header
         response = requests.get(url, headers=headers)
         log.logger.info("当前刮削到的演员元数据:{0}".format(response.text))
@@ -149,4 +150,5 @@ if __name__ == '__main__':
     # 初始化日志
     log = __init_logger()
     # 开始执行主程序
+    # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
     __execute(dir_path=__dir_path, output=__output, tmdb_token=__tmdb_token)
