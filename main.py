@@ -64,7 +64,7 @@ if __name__ == '__main__':
     # 输出演员元数据目录
     __output = "data/metadata/person"
     # TMDB API TOKEN
-    __tmdb_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTU4ODAxMGY5OTUwYWEyNThhYjFhYjJlMjI4NGVmYSIsInN1YiI6IjYxYmRmOGNjMzgzZGYyMDA0MjIzNDhjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RPG8F8AELlK7MgrXDR2U0YRv61VteZZ9ponilnkQqkE"
+    __tmdb_token = "tmdb_token"
     # 初始化日志
     log = __init_logger()
     # 开始执行主程序
