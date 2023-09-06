@@ -60,16 +60,34 @@ class Tmdb:
 
 
 if __name__ == '__main__':
-    __nfo_data = Analyze(file_path="example/神出鬼没 (2023) - 2160p.nfo").analyze()
-    for __actor in __nfo_data["actors"]:
-        __tmdbid = __actor["tmdbid"]
-        __actor_name = __actor["name"]
-        __name = __actor_name[1].lower()
-        __path_dir = os.path.join("data", __name, __actor_name)
-        if not os.path.exists(__path_dir):
-            os.makedirs(__path_dir)
-        if ".nfo" not in os.listdir(__path_dir):
-            __actor_info = Tmdb(tmdb_id=__tmdbid, actor_path=__path_dir).get_actor_info()
-            print(__actor_info)
-        if "folder" not in os.listdir(__path_dir):
-            Tmdb(tmdb_id=__tmdbid, actor_path=__path_dir).get_actor_image()
+    __dir_path = "example/tvs"
+    __output = "example/metadata/person"
+    __file_paths = []
+    for folder in os.listdir(__dir_path):
+        __folder2 = os.path.join(__dir_path, folder)
+        # 判断是否文件夹
+        if os.path.isdir(__folder2):
+            for nfo_file in os.listdir(__folder2):
+                __child_file_path = os.path.join(__folder2, nfo_file)
+                if ".nfo" in os.path.basename(__child_file_path):
+                    __file_paths.append(__child_file_path)
+        elif os.path.isfile(__folder2):
+            __file_name = os.path.basename(__folder2)
+            if ".nfo" in __file_name:
+                __file_paths.append(__folder2)
+    print(__file_paths)
+    for __file_path in __file_paths:
+        # __file_path = "example/神出鬼没 (2023) - 2160p.nfo"
+        __nfo_data = Analyze(file_path=__file_path).analyze()
+        for __actor in __nfo_data["actors"]:
+            __tmdbid = __actor["tmdbid"]
+            __actor_name = __actor["name"]
+            __name = __actor_name[1].lower()
+            __path_dir = os.path.join(__output, __name, __actor_name)
+            if not os.path.exists(__path_dir):
+                os.makedirs(__path_dir)
+            if ".nfo" not in os.listdir(__path_dir):
+                __actor_info = Tmdb(tmdb_id=__tmdbid, actor_path=__path_dir).get_actor_info()
+                print(__actor_info)
+            if "folder" not in os.listdir(__path_dir):
+                Tmdb(tmdb_id=__tmdbid, actor_path=__path_dir).get_actor_image()
