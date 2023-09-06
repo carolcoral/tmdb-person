@@ -67,7 +67,10 @@ pip3 install json
 
 ### 运行
 
-修改 `main.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 、 `__output` 、 `__tmdb_token` 参数值
-
+1. 修改 `main.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 、 `__output` 、 `__tmdb_token` 参数值
+2. 执行脚本
+```python
+python3 main.py
+```
 
 
