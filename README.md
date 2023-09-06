@@ -41,9 +41,10 @@ pip3 install json
 ### 说明
 
 **`参数说明`**
-* __dir_path: 目标文件夹路径。
+* __dir_path: 目标文件夹路径
   * 例如电影存放于 `./movies/` 下，则该路径填写 `./movies` 的完整路径。
   * 为了兼容 `电视剧` 中不刮削 `季` 中的 `.nfo` 内容，因此只刮削 `__dir_path` 路径下一层文件夹及当前层下的 `.nfo` 文件(兼容./movies 下同级存放的视频及.nfo文件)
+* __output: 演员信息、图片输出路径
 
 **`目录结构说明`**
 - ./movies
@@ -61,13 +62,13 @@ pip3 install json
 ### 运行
 **`方法一:`**
 
-修改 `person.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 参数值
+修改 `person.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 参数值和 `__output` 参数值
 
 **`方法二:`**
 
 > 通过命令行方式设置参数
 
 ```python
-python3 person.py /volume1/video/movies
+python3 person.py {"__dir_path":"/volume1/video/movies", "__output":"/volume1/metadata/person"}
 ```
 
