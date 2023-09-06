@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
 import xml.etree.ElementTree as ET
+from xml.dom.minidom import Document
 
 
 class Analyze:
@@ -29,3 +31,25 @@ class Analyze:
                 self.__list_nodes(node, actor_json)
                 actors.append(actor_json)
         data["actors"] = actors
+
+
+class Make:
+    def __init__(self, xml_path="./person.xml", data=""):
+        self.xml_path = xml_path
+        self.data = json.loads(data)
+
+    def create(self):
+        doc = Document()
+        person = doc.createElement("person")
+        doc.appendChild(person)
+        for key in self.data:
+            key_node = doc.createElement(key)
+            person.appendChild(key_node)
+            if "plot" == key or "outline" == key:
+                value = doc.createCDATASection(str(self.data[key]))
+            else:
+                value = doc.createTextNode(str(self.data[key]))
+            key_node.appendChild(value)
+        f = open(file=self.xml_path, mode="w")
+        doc.writexml(writer=f, addindent="  ", newl="\n", encoding="utf-8", standalone="yes")
+        f.close()

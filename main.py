@@ -52,7 +52,7 @@ def __execute(dir_path, output, tmdb_token):
                 os.makedirs(__path_dir)
             # 如果存在元数据则不再进行刮削
             if "person.nfo" not in os.listdir(__path_dir):
-                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).get_actor_info()
+                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).create_actor_nfo()
             # 如果存在海报则不再进行刮削
             if "folder.jpg" not in os.listdir(__path_dir):
                 Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).get_actor_image()
@@ -60,7 +60,7 @@ def __execute(dir_path, output, tmdb_token):
 
 if __name__ == '__main__':
     # 扫描目录
-    __dir_path = "example/movies"
+    __dir_path = "example/tvs"
     # 输出演员元数据目录
     __output = "data/metadata/person"
     # TMDB API TOKEN

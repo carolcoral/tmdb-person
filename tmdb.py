@@ -3,6 +3,8 @@
 import requests
 import json
 import os
+from analyze import Make
+import utils.DateUtil as DateUtil
 
 
 class Tmdb:
@@ -21,11 +23,11 @@ class Tmdb:
         url = "https://api.themoviedb.org/3/person/" + self.tmdb_id + "?language=" + self.language
         headers = self.header
         response = requests.get(url, headers=headers)
-        self.log.logger.info("当前刮削到的演员元数据:{0}".format(response.text))
         return response.text
 
     def get_actor_image(self):
         image_path = json.loads(self.get_actor_info())["profile_path"]
+        self.log.logger.info("当前刮削到的演员海报路径:{0}".format(image_path))
         if None is not image_path:
             url = 'https://www.themoviedb.org/t/p/original' + image_path
             response = requests.get(url)
@@ -40,7 +42,7 @@ class Tmdb:
         response = requests.get(url, headers=headers)
         return response.text
 
-    def __get_actor_plot(self):
+    def get_actor_plot(self):
         translations = self.__translations()
         translations_list = json.loads(translations)["translations"]
         translations_json = {}
@@ -53,7 +55,45 @@ class Tmdb:
         elif "US" in translations_json.keys():
             us = translations_json["US"]
             plot = us["data"]["biography"]
+        plot = plot.replace("\n", "").replace("\r\n", "")
         return plot
 
     def create_actor_nfo(self):
-        plot = self.__get_actor_plot()
+        actor_json = {}
+        plot = self.get_actor_plot()
+        actor_json["plot"] = plot
+        actor_json["outline"] = plot
+        actor_json["lockdata"] = "true"
+        actor_json["lockedfields"] = "Name|SortName"
+        actor_json["dateadded"] = DateUtil.get_today(DateUtil.FULL_DATE_FORMAT)
+
+        actor_info = self.get_actor_info()
+        self.log.logger.info("当前刮削到的演员元数据:{0}".format(actor_info))
+        info_json = json.loads(actor_info)
+        name = info_json["name"]
+        actor_json["title"] = name
+        birthday = info_json["birthday"]
+        actor_json["premiered"] = birthday
+        actor_json["releasedate"] = birthday
+
+        year = "" if birthday is None else birthday.split("-")[0]
+
+        actor_json["year"] = year
+        actor_json["sorttitle"] = name
+        actor_json["tmdbid"] = self.tmdb_id
+        actor_json["language"] = "zh-CN"
+        actor_json["countrycode"] = "CN"
+        actor_json["placeofbirth"] = info_json["place_of_birth"]
+        actor_json["uniqueid"] = self.tmdb_id
+
+        actor_json["adult"] = "" if info_json["adult"] is None else str(info_json["adult"])
+        actor_json["alsoknownas"] = "" if info_json["also_known_as"] is None else info_json["also_known_as"]
+        actor_json["deathday"] = "" if info_json["deathday"] is None else str(info_json["deathday"])
+        actor_json["gender"] = "" if info_json["gender"] is None else str(info_json["gender"])
+        actor_json["homepage"] = "" if info_json["homepage"] is None else str(info_json["homepage"])
+        actor_json["imdbid"] = "" if info_json["imdb_id"] is None else str(info_json["imdb_id"])
+        actor_json["knownfordepartment"] = "" if info_json["known_for_department"] is None else str(
+            info_json["known_for_department"])
+
+        actor_data = json.dumps(actor_json)
+        Make(xml_path=os.path.join(self.actor_path, "person.nfo"), data=actor_data).create()
