@@ -80,7 +80,7 @@ def __execute(dir_path, output, tmdb_token):
 
 if __name__ == '__main__':
     # 扫描目录
-    __dir_path = "example/tvs"
+    __dir_path = ["example/tvs"]
     # 输出演员元数据目录
     __output = "data/metadata/person"
     # TMDB API TOKEN
@@ -91,4 +91,5 @@ if __name__ == '__main__':
     __check_version()
     # 开始执行主程序
     # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
-    __execute(dir_path=__dir_path, output=__output, tmdb_token=__tmdb_token)
+    for __real_dir_path in __dir_path:
+        __execute(dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
