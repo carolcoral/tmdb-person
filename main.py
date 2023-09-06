@@ -8,19 +8,6 @@ from tmdb import Tmdb
 from utils.LoggerUtil import Logger
 
 
-def __check_version():
-    version_info = sys.version_info
-    if 3 > version_info.major:
-        log.logger.error("当前Python版本不能小于3!")
-        raise SystemExit(1)
-    else:
-        if 8 > version_info.minor:
-            log.logger.error("当前Python版本不能小于3.8!")
-            raise SystemExit(1)
-        elif 8 == version_info.minor:
-            log.logger.warn("推荐使用Python 3.9 及以上版本!")
-
-
 def __init_logger(log_file="tmdb.log", level="info", back_count=3):
     """
     服务日志记录对象
@@ -38,7 +25,24 @@ def __init_logger(log_file="tmdb.log", level="info", back_count=3):
     return Logger(log_file_abspath, level=level, backCount=back_count)
 
 
+
+
+
+def __check_version():
+    version_info = sys.version_info
+    if 3 > version_info.major:
+        log.logger.error("当前Python版本不能小于3!")
+        raise SystemExit(1)
+    else:
+        if 8 > version_info.minor:
+            log.logger.error("当前Python版本不能小于3.8!")
+            raise SystemExit(1)
+        elif 8 == version_info.minor:
+            log.logger.warn("推荐使用Python 3.9 及以上版本!")
+
+
 def __execute(dir_path, output, tmdb_token):
+    log.logger.info("------------------- 开始获取演员元数据及海报 -------------------")
     __file_paths = []
     log.logger.info("当前执行元数据刮削识别的根文件夹:{0}".format(dir_path))
     for folder in os.listdir(dir_path):
@@ -71,6 +75,7 @@ def __execute(dir_path, output, tmdb_token):
             # 如果存在海报则不再进行刮削
             if "folder.jpg" not in os.listdir(__path_dir):
                 Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).get_actor_image()
+    log.logger.info("------------------- 结束获取演员元数据及海报 -------------------")
 
 
 if __name__ == '__main__':
