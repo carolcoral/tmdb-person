@@ -4,6 +4,24 @@ import requests
 import os
 import xml.etree.ElementTree as ET
 import json
+from utils.LoggerUtil import Logger
+
+
+def __init_logger(log_file="tmdb.log", level="info", back_count=3):
+    """
+    服务日志记录对象
+    :param log_file: 日志文件名
+    :param level: 日志记录级别。debug info warning error crit
+    :param back_count: 日志文件备份天数
+    :return: 日志对象
+    """
+    # 获取当前文件路径
+    current_path = os.path.abspath(__file__)
+    # 获取当前文件的父目录
+    father_path = os.path.abspath(os.path.dirname(current_path) + os.path.sep + ".")
+    # (必填)日志文件名  log_file="/data/ws_env/logtest/process.log"
+    log_file_abspath = os.path.join(father_path, "logs", log_file)
+    return Logger(log_file_abspath, level=level, backCount=back_count)
 
 
 class Analyze:
@@ -39,15 +57,16 @@ class Tmdb:
         self.image_path = None
         self.tmdb_id = tmdb_id
         self.actor_path = actor_path
-        self.tmdb_token = tmdb_token
+        self.header = {
+            "accept": "application/json",
+            "Authorization": "Bearer " + tmdb_token
+        }
 
     def get_actor_info(self):
         url = "https://api.themoviedb.org/3/person/" + self.tmdb_id + "?language=zh-CN"
-        headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer " + self.tmdb_token
-        }
+        headers = self.header
         response = requests.get(url, headers=headers)
+        log.logger.info("当前刮削到的演员元数据:{0}".format(response.text))
         return response.text
 
     def get_actor_image(self):
@@ -60,9 +79,34 @@ class Tmdb:
                 with open(os.path.join(self.actor_path, "folder." + suffix), 'wb') as f:
                     f.write(response.content)
 
+    def __translations(self):
+        url = "https://api.themoviedb.org/3/person/" + self.tmdb_id + "/translations"
+        headers = self.header
+        response = requests.get(url, headers=headers)
+        return response.text
+
+    def __get_actor_plot(self):
+        translations = self.__translations()
+        translations_list = json.loads(translations)["translations"]
+        translations_json = {}
+        for translation in translations_list:
+            translations_json[translation["iso_3166_1"]] = translation
+        plot = ""
+        if "CN" in translations_json.keys():
+            zh = translations_json["CN"]
+            plot = zh["data"]["biography"]
+        elif "US" in translations_json.keys():
+            us = translations_json["US"]
+            plot = us["data"]["biography"]
+        return plot
+
+    def create_actor_nfo(self):
+        plot = self.__get_actor_plot()
+
 
 def __execute(dir_path, output, tmdb_token):
     __file_paths = []
+    log.logger.info("当前执行元数据刮削识别的根文件夹:{0}".format(dir_path))
     for folder in os.listdir(dir_path):
         __folder2 = os.path.join(dir_path, folder)
         # 判断是否文件夹
@@ -76,7 +120,7 @@ def __execute(dir_path, output, tmdb_token):
             if ".nfo" in __file_name:
                 __file_paths.append(__folder2)
     for __file_path in __file_paths:
-        print("开始处理元数据刮削识别:{0}".format(__file_path))
+        log.logger.info("开始处理元数据刮削识别:{0}".format(__file_path))
         # __file_path = "example/神出鬼没 (2023) - 2160p.nfo"
         __nfo_data = Analyze(file_path=__file_path).analyze()
         for __actor in __nfo_data["actors"]:
@@ -87,10 +131,11 @@ def __execute(dir_path, output, tmdb_token):
             __path_dir = os.path.join(output, __name, __full_actor_name)
             if not os.path.exists(__path_dir):
                 os.makedirs(__path_dir)
-            if ".nfo" not in os.listdir(__path_dir):
-                __actor_info = Tmdb(tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).get_actor_info()
-                print(__actor_info)
-            if "folder" not in os.listdir(__path_dir):
+            # 如果存在元数据则不再进行刮削
+            if "person.nfo" not in os.listdir(__path_dir):
+                Tmdb(tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).get_actor_info()
+            # 如果存在海报则不再进行刮削
+            if "folder.jpg" not in os.listdir(__path_dir):
                 Tmdb(tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).get_actor_image()
 
 
@@ -101,5 +146,7 @@ if __name__ == '__main__':
     __output = "data/metadata/person"
     # TMDB API TOKEN
     __tmdb_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTU4ODAxMGY5OTUwYWEyNThhYjFhYjJlMjI4NGVmYSIsInN1YiI6IjYxYmRmOGNjMzgzZGYyMDA0MjIzNDhjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RPG8F8AELlK7MgrXDR2U0YRv61VteZZ9ponilnkQqkE"
+    # 初始化日志
+    log = __init_logger()
     # 开始执行主程序
     __execute(dir_path=__dir_path, output=__output, tmdb_token=__tmdb_token)
