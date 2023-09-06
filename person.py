@@ -51,17 +51,18 @@ class Tmdb:
 
     def get_actor_image(self):
         image_path = json.loads(self.get_actor_info())["profile_path"]
-        url = 'https://www.themoviedb.org/t/p/original' + image_path
-        response = requests.get(url)
-        if response.status_code == 200:
-            suffix = image_path.split(".")[1]
-            with open(os.path.join(self.actor_path, "folder." + suffix), 'wb') as f:
-                f.write(response.content)
+        if None is not image_path:
+            url = 'https://www.themoviedb.org/t/p/original' + image_path
+            response = requests.get(url)
+            if response.status_code == 200:
+                suffix = image_path.split(".")[1]
+                with open(os.path.join(self.actor_path, "folder." + suffix), 'wb') as f:
+                    f.write(response.content)
 
 
 if __name__ == '__main__':
-    __dir_path = "example/tvs"
-    __output = "example/metadata/person"
+    __dir_path = "example/movies"
+    __output = "data/metadata/person"
     __file_paths = []
     for folder in os.listdir(__dir_path):
         __folder2 = os.path.join(__dir_path, folder)
@@ -75,15 +76,16 @@ if __name__ == '__main__':
             __file_name = os.path.basename(__folder2)
             if ".nfo" in __file_name:
                 __file_paths.append(__folder2)
-    print(__file_paths)
     for __file_path in __file_paths:
+        print("开始处理元数据刮削识别:{0}".format(__file_path))
         # __file_path = "example/神出鬼没 (2023) - 2160p.nfo"
         __nfo_data = Analyze(file_path=__file_path).analyze()
         for __actor in __nfo_data["actors"]:
             __tmdbid = __actor["tmdbid"]
             __actor_name = __actor["name"]
             __name = __actor_name[1].lower()
-            __path_dir = os.path.join(__output, __name, __actor_name)
+            __full_actor_name = __actor_name + "-tmdb-" + __tmdbid
+            __path_dir = os.path.join(__output, __name, __full_actor_name)
             if not os.path.exists(__path_dir):
                 os.makedirs(__path_dir)
             if ".nfo" not in os.listdir(__path_dir):
