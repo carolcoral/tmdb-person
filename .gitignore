@@ -167,3 +167,4 @@ cython_debug/
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/tmdb-person.iml
 /.idea/vcs.xml
+logs/tmdb.log
