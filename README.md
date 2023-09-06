@@ -1,11 +1,10 @@
 # tmdb-person
+![Python](https://img.shields.io/badge/Python-3.8-green)
+![TMDB](https://img.shields.io/badge/TMDB-V3-blue)
+![https://blog.cnkj.site](https://img.shields.io/badge/Blog-blog.cnkj.site-blue)
 > 根据nfo文件信息刮削相关演员信息及图片
 > 
 > 解决docker部署的emby服务无法正常刮削到视频演员信息问题(通过nastool可以正常刮削到视频信息)
-
-![](https://img.shields.io/badge/Python-3.8-green)
-![](https://img.shields.io/badge/TMDB-V3-blue)
-
 
 
 ## 数据
