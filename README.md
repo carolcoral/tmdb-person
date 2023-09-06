@@ -1,5 +1,5 @@
 # tmdb-person
-![Python](https://img.shields.io/badge/Python-3.8-green)
+![Python](https://img.shields.io/badge/Python-AtLeast3.8-green)
 ![TMDB](https://img.shields.io/badge/TMDB-V3-blue)
 ![https://blog.cnkj.site](https://img.shields.io/badge/Blog-blog.cnkj.site-blue)
 > 根据nfo文件信息刮削相关演员信息及图片
@@ -29,7 +29,8 @@
 2. 图片统一前缀路径：https://www.themoviedb.org/t/p/original
 
 ## 使用
-* 环境：Python3.8
+* 环境：Python3.9
+> 实际上最新要求`Python3.8`，如果需要xml中生成`standalone`参数则必须使用`Python3.9`
 
 ### 安装相关pip依赖包
 
