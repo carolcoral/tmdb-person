@@ -1,9 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
-from utils.LoggerUtil import Logger
-from tmdb import Tmdb
+import sys
+
 from analyze import Analyze
+from tmdb import Tmdb
+from utils.LoggerUtil import Logger
+
+
+def __check_version():
+    version_info = sys.version_info
+    if 3 > version_info.major:
+        log.logger.error("当前Python版本不能小于3!")
+        raise SystemExit(1)
+    else:
+        if 8 > version_info.minor:
+            log.logger.error("当前Python版本不能小于3.8!")
+            raise SystemExit(1)
+        elif 8 == version_info.minor:
+            log.logger.warn("推荐使用Python 3.9 及以上版本!")
 
 
 def __init_logger(log_file="tmdb.log", level="info", back_count=3):
@@ -67,6 +82,8 @@ if __name__ == '__main__':
     __tmdb_token = "tmdb_token"
     # 初始化日志
     log = __init_logger()
+    # 检查python版本
+    __check_version()
     # 开始执行主程序
     # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
     __execute(dir_path=__dir_path, output=__output, tmdb_token=__tmdb_token)

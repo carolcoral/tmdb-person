@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
+import sys
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import Document
 
@@ -51,5 +52,9 @@ class Make:
                 value = doc.createTextNode(str(self.data[key]))
             key_node.appendChild(value)
         f = open(file=self.xml_path, mode="w")
-        doc.writexml(writer=f, addindent="  ", newl="\n", encoding="utf-8", standalone="yes")
+        python_version = sys.version_info.minor
+        if 8 == python_version:
+            doc.writexml(writer=f, addindent="  ", newl="\n", encoding="utf-8")
+        elif 8 < python_version:
+            doc.writexml(writer=f, addindent="  ", newl="\n", encoding="utf-8", standalone="yes")
         f.close()
