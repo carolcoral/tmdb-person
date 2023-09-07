@@ -6,6 +6,12 @@ import os
 from analyze import Make
 import utils.DateUtil as DateUtil
 
+# https://api.tmdb.org
+# https://tmdb.nastool.org
+# https://t.nastool.workers.dev
+api_url = "https://api.themoviedb.org"
+image_url = "https://www.themoviedb.org"
+
 
 class Tmdb:
     def __init__(self, log, tmdb_id, actor_path, tmdb_token, language="zh-CN"):
@@ -20,7 +26,7 @@ class Tmdb:
         self.language = language
 
     def get_actor_info(self):
-        url = "https://api.themoviedb.org/3/person/" + self.tmdb_id + "?language=" + self.language
+        url = api_url + "/3/person/" + self.tmdb_id + "?language=" + self.language
         headers = self.header
         response = requests.get(url, headers=headers)
         return response.text
@@ -29,7 +35,7 @@ class Tmdb:
         image_path = json.loads(self.get_actor_info())["profile_path"]
         self.log.logger.info("当前刮削到的演员海报路径:{0}".format(image_path))
         if None is not image_path:
-            url = 'https://www.themoviedb.org/t/p/original' + image_path
+            url = image_url + '/t/p/original' + image_path
             response = requests.get(url)
             if response.status_code == 200:
                 suffix = image_path.split(".")[1]
@@ -37,7 +43,7 @@ class Tmdb:
                     f.write(response.content)
 
     def __translations(self):
-        url = "https://api.themoviedb.org/3/person/" + self.tmdb_id + "/translations"
+        url = api_url + "/3/person/" + self.tmdb_id + "/translations"
         headers = self.header
         response = requests.get(url, headers=headers)
         return response.text
