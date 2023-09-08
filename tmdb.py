@@ -72,7 +72,7 @@ class Tmdb:
         actor_json["outline"] = plot
         actor_json["lockdata"] = "true"
         actor_json["lockedfields"] = "Name|SortName"
-        actor_json["dateadded"] = DateUtil.get_today(DateUtil.FULL_DATE_FORMAT)
+        actor_json["dateadded"] = DateUtil.get_now(DateUtil.FULL_DATE_FORMAT)
 
         actor_info = self.get_actor_info()
         self.log.logger.info("当前刮削到的演员元数据:{0}".format(actor_info))

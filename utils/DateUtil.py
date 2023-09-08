@@ -40,3 +40,7 @@ def get_today_tmp(ms=False):
 def get_yesterday_tmp(n, ms=False):
     """获取昨天前的时间戳"""
     return get_someday_before_tmp(1, ms)
+
+
+def get_now(fmt=DEFAULT_DATE_FORMAT):
+    return datetime.datetime.now().strftime(fmt)
