@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
-import sys
 
 from analyze import Analyze
 from tmdb import Tmdb
 
 
-def __execute(log, dir_path, output, tmdb_token):
+def __execute(log, dir_path, output, tmdb_token, language="zh-CN"):
     log.logger.info("------------------- 开始获取演员元数据及海报 -------------------")
     __file_paths = []
     log.logger.info("当前执行元数据刮削识别的根文件夹:{0}".format(dir_path))
@@ -37,9 +36,10 @@ def __execute(log, dir_path, output, tmdb_token):
                 os.makedirs(__path_dir)
             # 如果存在元数据则不再进行刮削
             if "person.nfo" not in os.listdir(__path_dir):
-                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).create_actor_nfo()
+                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
+                     language=language).create_actor_nfo()
             # 如果存在海报则不再进行刮削
             if "folder.jpg" not in os.listdir(__path_dir):
-                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).get_actor_image()
+                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
+                     language=language).get_actor_image()
     log.logger.info("------------------- 结束获取演员元数据及海报 -------------------")
-
