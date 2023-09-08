@@ -38,8 +38,12 @@ def __execute(log, dir_path, output, tmdb_token, language="zh-CN"):
             if "person.nfo" not in os.listdir(__path_dir):
                 Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
                      language=language).create_actor_nfo()
+            else:
+                log.logger.info("当前路径已存在person.nfo文件, 跳过刮削:{0}".format(__path_dir))
             # 如果存在海报则不再进行刮削
             if "folder.jpg" not in os.listdir(__path_dir):
                 Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
                      language=language).get_actor_image()
+            else:
+                log.logger.info("当前路径已存在folder.jpg文件, 跳过刮削:{0}".format(__path_dir))
     log.logger.info("------------------- 结束获取演员元数据及海报 -------------------")
