@@ -27,9 +27,10 @@ def __execute(log, dir_path, output, tmdb_token, language="zh-CN"):
         # __file_path = "example/神出鬼没 (2023) - 2160p.nfo"
         __nfo_data = Analyze(file_path=__file_path).analyze()
         for __actor in __nfo_data["actors"]:
+            log.logger.warn("当前解析的演员信息: {0}".format(__actor))
             __tmdbid = __actor["tmdbid"]
             __actor_name = __actor["name"]
-            __name = __actor_name[1].lower()
+            __name = __actor_name[0].lower()
             __full_actor_name = __actor_name + "-tmdb-" + __tmdbid
             __path_dir = os.path.join(output, __name, __full_actor_name)
             if not os.path.exists(__path_dir):
