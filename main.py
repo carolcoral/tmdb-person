@@ -94,5 +94,5 @@ if __name__ == '__main__':
     # 开始执行主程序
     # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
     for __real_dir_path in __dir_path:
-        # __execute(log=log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
+        __execute(log=log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
         pass
