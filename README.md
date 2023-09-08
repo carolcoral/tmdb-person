@@ -30,7 +30,7 @@
 
 ## 使用
 * 环境：Python3.9
-> 实际上最新要求`Python3.8`，如果需要xml中生成`standalone`参数则必须使用`Python3.9`
+> 最低要求`Python3.8`，如果需要xml中生成`standalone`参数则必须使用`Python3.9` 及以上版本
 
 ### 安装相关pip依赖包
 
@@ -68,10 +68,21 @@ pip3 install json
 
 ### 运行
 
+#### 直接修改脚本文件方式
 1. 修改 `main.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 、 `__output` 、 `__tmdb_token` 参数值
 2. 执行脚本
 ```python
 python3 main.py
 ```
 
+#### 命令行执行
+> 注意参数 `--dir_path` 的值如果需要配置多个，请使用英文半角逗号拼接，不要有空格
 
+```python
+python3 main.py --dir_path "example/movies","example/tvs" --output data/metadata/person --tmdb_token
+```
+
+### 补充
+1. 运行提示 `no module name requests` 但是实际python环境中又安装了的：
+* 查看当前执行的python版本：```python --version```
+* 例如 ```python3 --version``` 显示的是3.8，但是实际又3.9版本的环境，可以使用 ```python3.9 -m pip install requests``` 进行指定python版本的依赖包安装

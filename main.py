@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-
-from analyze import Analyze
-from tmdb import Tmdb
 from utils.LoggerUtil import Logger
+from scrape import __execute
 
 
 def __init_logger(log_file="tmdb.log", level="info", back_count=3):
@@ -25,9 +23,6 @@ def __init_logger(log_file="tmdb.log", level="info", back_count=3):
     return Logger(log_file_abspath, level=level, backCount=back_count)
 
 
-
-
-
 def __check_version():
     version_info = sys.version_info
     if 3 > version_info.major:
@@ -41,55 +36,63 @@ def __check_version():
             log.logger.warn("推荐使用Python 3.9 及以上版本!")
 
 
-def __execute(dir_path, output, tmdb_token):
-    log.logger.info("------------------- 开始获取演员元数据及海报 -------------------")
-    __file_paths = []
-    log.logger.info("当前执行元数据刮削识别的根文件夹:{0}".format(dir_path))
-    for folder in os.listdir(dir_path):
-        __folder2 = os.path.join(dir_path, folder)
-        # 判断是否文件夹
-        if os.path.isdir(__folder2):
-            for nfo_file in os.listdir(__folder2):
-                __child_file_path = os.path.join(__folder2, nfo_file)
-                if ".nfo" in os.path.basename(__child_file_path):
-                    __file_paths.append(__child_file_path)
-        elif os.path.isfile(__folder2):
-            __file_name = os.path.basename(__folder2)
-            if ".nfo" in __file_name:
-                __file_paths.append(__folder2)
-    for __file_path in __file_paths:
-        log.logger.info("开始处理元数据刮削识别:{0}".format(__file_path))
-        # __file_path = "example/神出鬼没 (2023) - 2160p.nfo"
-        __nfo_data = Analyze(file_path=__file_path).analyze()
-        for __actor in __nfo_data["actors"]:
-            __tmdbid = __actor["tmdbid"]
-            __actor_name = __actor["name"]
-            __name = __actor_name[1].lower()
-            __full_actor_name = __actor_name + "-tmdb-" + __tmdbid
-            __path_dir = os.path.join(output, __name, __full_actor_name)
-            if not os.path.exists(__path_dir):
-                os.makedirs(__path_dir)
-            # 如果存在元数据则不再进行刮削
-            if "person.nfo" not in os.listdir(__path_dir):
-                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).create_actor_nfo()
-            # 如果存在海报则不再进行刮削
-            if "folder.jpg" not in os.listdir(__path_dir):
-                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token).get_actor_image()
-    log.logger.info("------------------- 结束获取演员元数据及海报 -------------------")
+def __get_sys_args(log):
+    arg_json = {}
+    size = len(sys.argv)
+    if size == 1:
+        return arg_json
+    elif size > 1 and (size - 1) % 2 != 0:
+        print(size)
+        log.logger.error("请输入正确的配置参数!")
+        raise SystemExit(1)
+    i = 0
+    arg_key = {}
+    for arg in sys.argv:
+        arg_key[arg] = i
+        i = i + 1
+    if "--dir_path" not in arg_key.keys():
+        log.logger.error("请输入正确的扫描目录参数:{0}".format("--dir_path"))
+        raise SystemExit(1)
+    else:
+        __dir_arg = sys.argv[arg_key["--dir_path"] + 1]
+        dir_args = []
+        for d_arg in __dir_arg.split(","):
+            dir_args.append(d_arg.strip())
+        arg_json["__dir_path"] = dir_args
+    if "--output" not in arg_key.keys():
+        log.logger.error("请输入正确的输出演员元数据目录参数:{0}".format("--output"))
+        raise SystemExit(1)
+    else:
+        arg_json["__output"] = sys.argv[arg_key["--output"] + 1]
+    if "--tmdb_token" not in arg_key.keys():
+        log.logger.error("请输入正确的TMDB API TOKEN参数:{0}".format("--tmdb_token"))
+        raise SystemExit(1)
+    else:
+        arg_json["__tmdb_token"] = sys.argv[arg_key["--tmdb_token"] + 1]
+    return arg_json
 
 
 if __name__ == '__main__':
+    # 初始化日志
+    log = __init_logger()
+    sys_args = __get_sys_args(log=log)
     # 扫描目录
-    __dir_path = ["example/tvs"]
+    __dir_path = ["example/movies", "example/tvs"]
     # 输出演员元数据目录
     __output = "data/metadata/person"
     # TMDB API TOKEN
-    __tmdb_token = "tmdb_token"
-    # 初始化日志
-    log = __init_logger()
+    __tmdb_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTU4ODAxMGY5OTUwYWEyNThhYjFhYjJlMjI4NGVmYSIsInN1YiI6IjYxYmRmOGNjMzgzZGYyMDA0MjIzNDhjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RPG8F8AELlK7MgrXDR2U0YRv61VteZZ9ponilnkQqkE"
+    if len(sys_args.keys()) > 0:
+        # 扫描目录
+        __dir_path = sys_args["__dir_path"]
+        # 输出演员元数据目录
+        __output = sys_args["__output"]
+        # TMDB API TOKEN
+        __tmdb_token = sys_args["__tmdb_token"]
     # 检查python版本
     __check_version()
     # 开始执行主程序
     # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
     for __real_dir_path in __dir_path:
-        __execute(dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
+        # __execute(log=log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
+        pass
