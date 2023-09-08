@@ -10,7 +10,7 @@ import utils.DateUtil as DateUtil
 # https://tmdb.nastool.org
 # https://t.nastool.workers.dev
 # https://api.themoviedb.org
-api_url = "https://api.themoviedb.org"
+api_url = "https://api.tmdb.org"
 image_url = "https://www.themoviedb.org"
 
 
