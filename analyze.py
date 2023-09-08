@@ -13,14 +13,9 @@ class Analyze:
     def analyze(self):
         tree = ET.parse(self.file_path)
         root = tree.getroot()
-        if "tvshow" in root.tag:
-            data_json = {}
-            self.__list_nodes(root, data_json)
-            return data_json
-        if "movie" in root.tag:
-            data_json = {}
-            self.__list_nodes(root, data_json)
-            return data_json
+        data_json = {}
+        self.__list_nodes(root, data_json)
+        return data_json
 
     def __list_nodes(self, root, data):
         actors = []
