@@ -71,8 +71,8 @@ def __get_sys_args(log):
     else:
         arg_json["__tmdb_token"] = sys.argv[arg_key["--tmdb_token"] + 1]
     if "--mode" not in arg_key.keys():
-        log.logger.warn("未输入脚本执行模式，默认使用元数据刮削模式:{0}".format("--mode"))
-        arg_json["__mode"] = "scrape"
+        log.logger.warn("未输入脚本执行模式，默认使用元数据文件转移模式:{0}".format("--mode"))
+        arg_json["__mode"] = "collect"
     else:
         mode_value = sys.argv[arg_key["--mode"] + 1]
         if "collect" != mode_value and "scrape" != mode_value:
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     __output = "data/metadata/nfo"
     # TMDB API TOKEN
     __tmdb_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTU4ODAxMGY5OTUwYWEyNThhYjFhYjJlMjI4NGVmYSIsInN1YiI6IjYxYmRmOGNjMzgzZGYyMDA0MjIzNDhjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RPG8F8AELlK7MgrXDR2U0YRv61VteZZ9ponilnkQqkE"
-    __mode = "scrape"
+    __mode = "collect"
     if len(sys_args.keys()) > 0:
         # 扫描目录
         __dir_path = sys_args["__dir_path"]
