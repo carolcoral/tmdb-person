@@ -4,6 +4,7 @@ import os
 import sys
 from utils.LoggerUtil import Logger
 from scrape import __execute
+from collect_metadata import __collect_nfo
 
 
 def __init_logger(log_file="tmdb.log", level="info", back_count=3):
@@ -23,7 +24,7 @@ def __init_logger(log_file="tmdb.log", level="info", back_count=3):
     return Logger(log_file_abspath, level=level, backCount=back_count)
 
 
-def __check_version():
+def __check_version(log):
     version_info = sys.version_info
     if 3 > version_info.major:
         log.logger.error("当前Python版本不能小于3!")
@@ -69,19 +70,29 @@ def __get_sys_args(log):
         raise SystemExit(1)
     else:
         arg_json["__tmdb_token"] = sys.argv[arg_key["--tmdb_token"] + 1]
+    if "--mode" not in arg_key.keys():
+        log.logger.warn("未输入脚本执行模式，默认使用元数据刮削模式:{0}".format("--mode"))
+        arg_json["__mode"] = "scrape"
+    else:
+        mode_value = sys.argv[arg_key["--mode"] + 1]
+        if "collect" != mode_value and "scrape" != mode_value:
+            log.logger.error("请输入正确的脚本执行模式:{0}".format("collect(元数据文件转移)/scrape(元数据刮削)"))
+            raise SystemExit(1)
+        arg_json["__mode"] = mode_value
     return arg_json
 
 
 if __name__ == '__main__':
     # 初始化日志
-    log = __init_logger()
-    sys_args = __get_sys_args(log=log)
+    __log = __init_logger()
+    sys_args = __get_sys_args(log=__log)
     # 扫描目录
     __dir_path = ["example/movies", "example/tvs"]
     # 输出演员元数据目录
     __output = "data/metadata/person"
     # TMDB API TOKEN
     __tmdb_token = "token.eyJhdWQiOiIxYTU4ODAxMGY5OTUwYWEyNThhYjFhYjJlMjI4NGVmYSIsInN1YiI6IjYxYmRmOGNjMzgzZGYyMDA0MjIzNDhjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RPG8F8AELlK7MgrXDR2U0YRv61VteZZ9ponilnkQqkE"
+    __mode = "scrape"
     if len(sys_args.keys()) > 0:
         # 扫描目录
         __dir_path = sys_args["__dir_path"]
@@ -89,10 +100,13 @@ if __name__ == '__main__':
         __output = sys_args["__output"]
         # TMDB API TOKEN
         __tmdb_token = sys_args["__tmdb_token"]
+        __mode = sys_args["__mode"]
     # 检查python版本
-    __check_version()
+    __check_version(log=__log)
     # 开始执行主程序
     # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
     for __real_dir_path in __dir_path:
-        __execute(log=log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
-        pass
+        if "collect" == __mode:
+            __collect_nfo(__log, __real_dir_path, __output)
+        if "scrape" == __mode:
+            __execute(log=__log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
