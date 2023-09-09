@@ -119,4 +119,4 @@ class Tmdb:
             try:
                 Make(xml_path=os.path.join(self.actor_path, "person.nfo"), data=actor_data).create()
             except Exception as e:
-                self.log.logger.error("当前处理出现异常:{0}".format(e))
+                self.log.logger.error("当前生成演员元数据NFO文件出现异常:{0}".format(e))
