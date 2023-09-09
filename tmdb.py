@@ -33,7 +33,7 @@ class Tmdb:
         headers = self.header
         response = requests.get(url, headers=headers)
         if 200 == response.status_code:
-            return response.text
+            return response.text.encode("utf-8")
         else:
             return "{}"
 
@@ -107,7 +107,8 @@ class Tmdb:
             actor_json["uniqueid"] = self.tmdb_id
 
             actor_json["adult"] = "" if info_json["adult"] is None else str(info_json["adult"])
-            actor_json["alsoknownas"] = "" if info_json["also_known_as"] is None else info_json["also_known_as"]
+            # 不建议使用，存在gbk转码问题
+            # actor_json["alsoknownas"] = "" if info_json["also_known_as"] is None else info_json["also_known_as"]
             actor_json["deathday"] = "" if info_json["deathday"] is None else str(info_json["deathday"])
             actor_json["gender"] = "" if info_json["gender"] is None else str(info_json["gender"])
             actor_json["homepage"] = "" if info_json["homepage"] is None else str(info_json["homepage"])
@@ -116,7 +117,9 @@ class Tmdb:
                 info_json["known_for_department"])
 
             actor_data = json.dumps(actor_json)
-            try:
-                Make(xml_path=os.path.join(self.actor_path, "person.nfo"), data=actor_data).create()
-            except Exception as e:
-                self.log.logger.error("当前生成演员元数据NFO文件出现异常:{0}".format(e))
+            print(actor_data)
+            Make(xml_path=os.path.join(self.actor_path, "person.nfo"), data=actor_data).create()
+            # try:
+            #     pass
+            # except Exception as e:
+            #     self.log.logger.error("当前生成演员元数据NFO文件出现异常:{0}".format(e))
