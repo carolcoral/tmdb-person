@@ -168,3 +168,4 @@ cython_debug/
 /.idea/tmdb-person.iml
 /.idea/vcs.xml
 logs/tmdb.log
+data/data/metadata/person
