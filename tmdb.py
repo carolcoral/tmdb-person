@@ -38,15 +38,17 @@ class Tmdb:
             return "{}"
 
     def get_actor_image(self):
-        image_path = json.loads(self.get_actor_info())["profile_path"]
-        self.log.logger.info("当前刮削到的演员海报路径:{0}".format(image_path))
-        if None is not image_path:
-            url = image_url + '/t/p/original' + image_path
-            response = requests.get(url)
-            if response.status_code == 200:
-                suffix = image_path.split(".")[1]
-                with open(os.path.join(self.actor_path, "folder." + suffix), 'wb') as f:
-                    f.write(response.content)
+        ac_json = json.loads(self.get_actor_info())
+        if len(ac_json.keys()) > 0:
+            image_path = json.loads(self.get_actor_info())["profile_path"]
+            self.log.logger.info("当前刮削到的演员海报路径:{0}".format(image_path))
+            if None is not image_path:
+                url = image_url + '/t/p/original' + image_path
+                response = requests.get(url)
+                if response.status_code == 200:
+                    suffix = image_path.split(".")[1]
+                    with open(os.path.join(self.actor_path, "folder." + suffix), 'wb') as f:
+                        f.write(response.content)
 
     def __translations(self):
         url = api_url + "/3/person/" + self.tmdb_id + "/translations"

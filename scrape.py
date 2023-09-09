@@ -28,23 +28,24 @@ def __execute(log, dir_path, output, tmdb_token, language="zh-CN"):
         __nfo_data = Analyze(file_path=__file_path).analyze()
         for __actor in __nfo_data["actors"]:
             log.logger.warn("当前解析的演员信息: {0}".format(__actor))
-            __tmdbid = __actor["tmdbid"]
-            __actor_name = __actor["name"]
-            __name = __actor_name[0].lower()
-            __full_actor_name = __actor_name + "-tmdb-" + __tmdbid
-            __path_dir = os.path.join(output, __name, __full_actor_name)
-            if not os.path.exists(__path_dir):
-                os.makedirs(__path_dir)
-            # 如果存在元数据则不再进行刮削
-            if "person.nfo" not in os.listdir(__path_dir):
-                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
-                     language=language).create_actor_nfo()
-            else:
-                log.logger.info("当前路径已存在person.nfo文件, 跳过刮削:{0}".format(__path_dir))
-            # 如果存在海报则不再进行刮削
-            if "folder.jpg" not in os.listdir(__path_dir):
-                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
-                     language=language).get_actor_image()
-            else:
-                log.logger.info("当前路径已存在folder.jpg文件, 跳过刮削:{0}".format(__path_dir))
+            if "tmdbid" in __actor.keys():
+                __tmdbid = __actor["tmdbid"]
+                __actor_name = __actor["name"]
+                __name = __actor_name[0].lower()
+                __full_actor_name = __actor_name + "-tmdb-" + __tmdbid
+                __path_dir = os.path.join(output, __name, __full_actor_name)
+                if not os.path.exists(__path_dir):
+                    os.makedirs(__path_dir)
+                # 如果存在元数据则不再进行刮削
+                if "person.nfo" not in os.listdir(__path_dir):
+                    Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
+                         language=language).create_actor_nfo()
+                else:
+                    log.logger.info("当前路径已存在person.nfo文件, 跳过刮削:{0}".format(__path_dir))
+                # 如果存在海报则不再进行刮削
+                if "folder.jpg" not in os.listdir(__path_dir):
+                    Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
+                         language=language).get_actor_image()
+                else:
+                    log.logger.info("当前路径已存在folder.jpg文件, 跳过刮削:{0}".format(__path_dir))
     log.logger.info("------------------- 结束获取演员元数据及海报 -------------------")
