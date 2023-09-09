@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
+
 import requests
 import json
 import os
@@ -47,22 +49,27 @@ class Tmdb:
         url = api_url + "/3/person/" + self.tmdb_id + "/translations"
         headers = self.header
         response = requests.get(url, headers=headers)
-        return response.text
+        if 200 == response.status_code:
+            return response.text
+        else:
+            return "{}"
 
     def get_actor_plot(self):
-        translations = self.__translations()
-        translations_list = json.loads(translations)["translations"]
-        translations_json = {}
-        for translation in translations_list:
-            translations_json[translation["iso_3166_1"]] = translation
         plot = ""
-        if "CN" in translations_json.keys():
-            zh = translations_json["CN"]
-            plot = zh["data"]["biography"]
-        elif "US" in translations_json.keys():
-            us = translations_json["US"]
-            plot = us["data"]["biography"]
-        plot = plot.replace("\n", "").replace("\r\n", "")
+        translations = self.__translations()
+        translations_json = json.loads(translations)
+        if "translations" in translations_json:
+            translations_list = json.loads(translations)["translations"]
+            translations_json = {}
+            for translation in translations_list:
+                translations_json[translation["iso_3166_1"]] = translation
+            if "CN" in translations_json.keys():
+                zh = translations_json["CN"]
+                plot = zh["data"]["biography"]
+            elif "US" in translations_json.keys():
+                us = translations_json["US"]
+                plot = us["data"]["biography"]
+            plot = plot.replace("\n", "").replace("\r\n", "")
         return plot
 
     def create_actor_nfo(self):
@@ -103,4 +110,7 @@ class Tmdb:
             info_json["known_for_department"])
 
         actor_data = json.dumps(actor_json)
-        Make(xml_path=os.path.join(self.actor_path, "person.nfo"), data=actor_data).create()
+        try:
+            Make(xml_path=os.path.join(self.actor_path, "person.nfo"), data=actor_data).create()
+        except Exception as e:
+            self.log.logger.error("当前处理出现异常:{0}".format(e))
