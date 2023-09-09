@@ -32,7 +32,10 @@ class Tmdb:
         url = api_url + "/3/person/" + self.tmdb_id + "?language=" + self.language
         headers = self.header
         response = requests.get(url, headers=headers)
-        return response.text
+        if 200 == response.status_code:
+            return response.text
+        else:
+            return "{}"
 
     def get_actor_image(self):
         image_path = json.loads(self.get_actor_info())["profile_path"]
@@ -84,33 +87,34 @@ class Tmdb:
         actor_info = self.get_actor_info()
         self.log.logger.info("当前刮削到的演员元数据:{0}".format(actor_info))
         info_json = json.loads(actor_info)
-        name = info_json["name"]
-        actor_json["title"] = name
-        birthday = info_json["birthday"]
-        actor_json["premiered"] = birthday
-        actor_json["releasedate"] = birthday
+        if len(info_json.keys()) > 0:
+            name = info_json["name"]
+            actor_json["title"] = name
+            birthday = info_json["birthday"]
+            actor_json["premiered"] = birthday
+            actor_json["releasedate"] = birthday
 
-        year = "" if birthday is None else birthday.split("-")[0]
+            year = "" if birthday is None else birthday.split("-")[0]
 
-        actor_json["year"] = year
-        actor_json["sorttitle"] = name
-        actor_json["tmdbid"] = self.tmdb_id
-        actor_json["language"] = "zh-CN"
-        actor_json["countrycode"] = "CN"
-        actor_json["placeofbirth"] = info_json["place_of_birth"]
-        actor_json["uniqueid"] = self.tmdb_id
+            actor_json["year"] = year
+            actor_json["sorttitle"] = name
+            actor_json["tmdbid"] = self.tmdb_id
+            actor_json["language"] = "zh-CN"
+            actor_json["countrycode"] = "CN"
+            actor_json["placeofbirth"] = info_json["place_of_birth"]
+            actor_json["uniqueid"] = self.tmdb_id
 
-        actor_json["adult"] = "" if info_json["adult"] is None else str(info_json["adult"])
-        actor_json["alsoknownas"] = "" if info_json["also_known_as"] is None else info_json["also_known_as"]
-        actor_json["deathday"] = "" if info_json["deathday"] is None else str(info_json["deathday"])
-        actor_json["gender"] = "" if info_json["gender"] is None else str(info_json["gender"])
-        actor_json["homepage"] = "" if info_json["homepage"] is None else str(info_json["homepage"])
-        actor_json["imdbid"] = "" if info_json["imdb_id"] is None else str(info_json["imdb_id"])
-        actor_json["knownfordepartment"] = "" if info_json["known_for_department"] is None else str(
-            info_json["known_for_department"])
+            actor_json["adult"] = "" if info_json["adult"] is None else str(info_json["adult"])
+            actor_json["alsoknownas"] = "" if info_json["also_known_as"] is None else info_json["also_known_as"]
+            actor_json["deathday"] = "" if info_json["deathday"] is None else str(info_json["deathday"])
+            actor_json["gender"] = "" if info_json["gender"] is None else str(info_json["gender"])
+            actor_json["homepage"] = "" if info_json["homepage"] is None else str(info_json["homepage"])
+            actor_json["imdbid"] = "" if info_json["imdb_id"] is None else str(info_json["imdb_id"])
+            actor_json["knownfordepartment"] = "" if info_json["known_for_department"] is None else str(
+                info_json["known_for_department"])
 
-        actor_data = json.dumps(actor_json)
-        try:
-            Make(xml_path=os.path.join(self.actor_path, "person.nfo"), data=actor_data).create()
-        except Exception as e:
-            self.log.logger.error("当前处理出现异常:{0}".format(e))
+            actor_data = json.dumps(actor_json)
+            try:
+                Make(xml_path=os.path.join(self.actor_path, "person.nfo"), data=actor_data).create()
+            except Exception as e:
+                self.log.logger.error("当前处理出现异常:{0}".format(e))
