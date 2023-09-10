@@ -120,5 +120,5 @@ class Tmdb:
             try:
                 Make(xml_path=os.path.join(self.actor_path, "person.nfo"), data=actor_data).create()
             except Exception as e:
-                print(actor_data)
+                self.log.logger.error(actor_data)
                 self.log.logger.error("当前写入元数据出现异常，路径:{0}, 异常:{1}".format(self.actor_path, e))
