@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-from utils.LoggerUtil import Logger
-from scrape import __execute
+
 from collect_metadata import __collect_nfo
+from redo import __redo
+from scrape import __execute
+from utils.LoggerUtil import Logger
 
 
 def __init_logger(log_file="tmdb.log", level="info", back_count=3):
@@ -76,7 +78,7 @@ def __get_sys_args(log):
     else:
         mode_value = sys.argv[arg_key["--mode"] + 1]
         if "collect" != mode_value and "scrape" != mode_value:
-            log.logger.error("请输入正确的脚本执行模式:{0}".format("collect(元数据文件转移)/scrape(元数据刮削)"))
+            log.logger.error("请输入正确的脚本执行模式:{0}".format("collect(元数据文件转移)/scrape(元数据刮削)/redo(重新刮削异常元数据)"))
             raise SystemExit(1)
         arg_json["__mode"] = mode_value
     return arg_json
@@ -104,6 +106,8 @@ if __name__ == '__main__':
         __mode = sys_args["__mode"]
     # 检查python版本
     __check_version(log=__log)
+    # 删除异常信息存储文件
+    os.remove("./error_tmdb_ids.txt")
     # 开始执行主程序
     # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
     for __real_dir_path in __dir_path:
@@ -111,3 +115,5 @@ if __name__ == '__main__':
             __collect_nfo(__log, __real_dir_path, __output)
         if "scrape" == __mode:
             __execute(log=__log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
+        if "redo" == __mode:
+            __redo(log=__log, output=__output, tmdb_token=__tmdb_token)
