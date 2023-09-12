@@ -43,6 +43,11 @@ pip3 install os
 pip3 install xml
 pip3 install json
 ```
+OR
+
+```python
+pip3 install -r requirements.txt
+```
 
 ### 说明
 
