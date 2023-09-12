@@ -106,14 +106,14 @@ if __name__ == '__main__':
         __mode = sys_args["__mode"]
     # 检查python版本
     __check_version(log=__log)
-    # 删除异常信息存储文件
-    os.remove("./error_tmdb_ids.txt")
     # 开始执行主程序
     # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
     for __real_dir_path in __dir_path:
         if "collect" == __mode:
             __collect_nfo(__log, __real_dir_path, __output)
         if "scrape" == __mode:
+            # 删除异常信息存储文件
+            os.remove("./error_tmdb_ids.txt")
             __execute(log=__log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
         if "redo" == __mode:
             __redo(log=__log, output=__output, tmdb_token=__tmdb_token)
