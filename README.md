@@ -1,6 +1,6 @@
 # tmdb-person
 ![Python](https://img.shields.io/badge/Python-3.9-green)
-![TMDB](https://img.shields.io/badge/TMDB-V3-blue)
+![TMDB](https://img.shields.io/badge/TMDB-V3-orign)
 ![https://blog.cnkj.site](https://img.shields.io/badge/Blog-blog.cnkj.site-blue)
 
 > 根据nfo文件信息刮削相关演员信息及图片
