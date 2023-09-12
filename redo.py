@@ -45,5 +45,5 @@ if __name__ == '__main__':
     error_file = open("./error_tmdb_ids.txt", "w+")
     for i in os.listdir("data/data/metadata/error"):
         print(i)
-        error_file.write(i)
+        error_file.write(i+",")
     error_file.close()

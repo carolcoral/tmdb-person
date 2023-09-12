@@ -123,7 +123,7 @@ class Tmdb:
             except Exception as e:
                 os.remove(person_nfo)
                 error_file = open("./error_tmdb_ids.txt", "w+")
-                error_file.write(os.path.basename(self.actor_path))
+                error_file.write(os.path.basename(self.actor_path) + ",")
                 error_file.close()
                 self.log.logger.error(actor_data)
                 self.log.logger.error("当前写入元数据出现异常，路径:{0}, 异常:{1}".format(self.actor_path, e))
