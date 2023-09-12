@@ -77,7 +77,7 @@ class Tmdb:
             plot = plot.replace("\n", "").replace("\r\n", "")
         return plot
 
-    def create_actor_nfo(self):
+    def create_actor_nfo(self, redo=False):
         actor_json = {}
         plot = self.get_actor_plot()
         actor_json["plot"] = plot
@@ -120,10 +120,19 @@ class Tmdb:
             person_nfo = os.path.join(self.actor_path, "person.nfo")
             try:
                 Make(xml_path=person_nfo, data=actor_data).create()
+                # 重做模式下删除重新成功刮削的信息
+                if redo:
+                    error_file_read = open("./error_tmdb_ids.txt", "r+")
+                    new_read = error_file_read.read().replace(os.path.basename(self.actor_path) + ",", "")
+                    error_file_w = open("./error_tmdb_ids.txt", "w")
+                    error_file_w.write(new_read)
+                    error_file_w.close()
             except Exception as e:
                 os.remove(person_nfo)
-                error_file = open("./error_tmdb_ids.txt", "w+")
-                error_file.write(os.path.basename(self.actor_path) + ",")
-                error_file.close()
+                # 非重做模式下记录刮削异常信息，重做模式下不再重复记录
+                if not redo:
+                    error_file = open("./error_tmdb_ids.txt", "w+")
+                    error_file.write(os.path.basename(self.actor_path) + ",")
+                    error_file.close()
                 self.log.logger.error(actor_data)
                 self.log.logger.error("当前写入元数据出现异常，路径:{0}, 异常:{1}".format(self.actor_path, e))

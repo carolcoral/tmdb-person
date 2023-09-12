@@ -95,7 +95,7 @@ if __name__ == '__main__':
     __output = "data/data/metadata/person"
     # TMDB API TOKEN
     __tmdb_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTU4ODAxMGY5OTUwYWEyNThhYjFhYjJlMjI4NGVmYSIsInN1YiI6IjYxYmRmOGNjMzgzZGYyMDA0MjIzNDhjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RPG8F8AELlK7MgrXDR2U0YRv61VteZZ9ponilnkQqkE"
-    __mode = "scrape"
+    __mode = "redo"
     if len(sys_args.keys()) > 0:
         # 扫描目录
         __dir_path = sys_args["__dir_path"]

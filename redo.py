@@ -15,29 +15,31 @@ from tmdb import Tmdb
 
 
 def __redo(log, output, tmdb_token, language="zh-CN"):
+    log.logger.info("------------------- 开始重新刮削: {0} -------------------".format("./error_tmdb_ids.txt"))
+
     with open("./error_tmdb_ids.txt", "r") as error_f:
         error_info = error_f.read()
         for info in error_info.split(","):
             info = info.strip()
-            __tmdbid = info.split("-")[2]
-            __actor_name = info.split("-")[0]
+            if "" == info:
+                break
+            __tmdb_id = info.split("-tmdb-")[1]
+            __actor_name = info.split("-tmdb-")[0]
             __name = __actor_name[0].lower()
-            __full_actor_name = __actor_name + "-tmdb-" + __tmdbid
+            __full_actor_name = __actor_name + "-tmdb-" + __tmdb_id
             __path_dir = os.path.join(output, __name, __full_actor_name)
             if not os.path.exists(__path_dir):
                 os.makedirs(__path_dir)
-            # 如果存在元数据则不再进行刮削
-            if "person.nfo" not in os.listdir(__path_dir):
-                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
-                     language=language).create_actor_nfo()
-            else:
-                log.logger.info("当前路径已存在person.nfo文件, 跳过刮削:{0}".format(__path_dir))
+            # 如果存在元数据则覆盖刮削
+            Tmdb(log=log, tmdb_id=__tmdb_id, actor_path=__path_dir, tmdb_token=tmdb_token,
+                 language=language).create_actor_nfo(redo=True)
             # 如果存在海报则不再进行刮削
             if "folder.jpg" not in os.listdir(__path_dir):
-                Tmdb(log=log, tmdb_id=__tmdbid, actor_path=__path_dir, tmdb_token=tmdb_token,
+                Tmdb(log=log, tmdb_id=__tmdb_id, actor_path=__path_dir, tmdb_token=tmdb_token,
                      language=language).get_actor_image()
             else:
                 log.logger.info("当前路径已存在folder.jpg文件, 跳过刮削:{0}".format(__path_dir))
+    log.logger.info("------------------- 结束重新刮削: {0} -------------------".format("./error_tmdb_ids.txt"))
 
 
 if __name__ == '__main__':
