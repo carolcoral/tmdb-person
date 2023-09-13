@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import os
 
-from analyze import Analyze
-from tmdb import Tmdb
+from utils.analyze import Analyze
+from utils.tmdb import Tmdb
 
 
 def __execute(log, dir_path, output, tmdb_token, language="zh-CN"):

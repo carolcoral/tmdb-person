@@ -11,7 +11,7 @@
 """
 import os
 
-from tmdb import Tmdb
+from utils.tmdb import Tmdb
 
 
 def __redo(log, output, tmdb_token, language="zh-CN"):
