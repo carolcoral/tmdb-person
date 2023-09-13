@@ -4,7 +4,7 @@ import os
 import sys
 
 from collect_metadata import __collect_nfo
-from redo import __redo
+from redo import __redo,__check
 from scrape import __execute
 from utils.LoggerUtil import Logger
 
@@ -119,3 +119,6 @@ if __name__ == '__main__':
             __execute(log=__log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
         if "redo" == __mode:
             __redo(log=__log, output=__output, tmdb_token=__tmdb_token)
+        if "check" == __mode:
+            __check(scan_path=__output)
+

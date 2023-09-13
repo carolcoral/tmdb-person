@@ -1,4 +1,6 @@
 # tmdb-person
+
+![Version](https://img.shields.io/badge/version-1.0.2-blue)
 ![Python](https://img.shields.io/badge/Python-3.9-green)
 ![TMDB](https://img.shields.io/badge/TMDB-V3-orign)
 ![https://blog.cnkj.site](https://img.shields.io/badge/Blog-blog.cnkj.site-blue)
@@ -61,9 +63,11 @@ pip3 install -r requirements.txt
   * 访问 [API](https://www.themoviedb.org/settings/api)
   * 复制 `API 读访问令牌`
 * __mode: 脚本执行模式, 可选参数. 命令行执行脚本使用```--mode collect``` 调用
-  * scrape: 刮削模式，从扫描目录直接识别nfo文件并刮削元数据和图片到输出目录中
-  * collect: 转移模式，从扫描目录收集所有nfo文件并复制到输出目录中(不执行刮削操作)
-  * redo: 重做模式，执行正常刮削数据中出现的异常进行重新处理
+  * scrape: 刮削模式.从扫描目录直接识别nfo文件并刮削元数据和图片到输出目录中
+  * collect: 转移模式.从扫描目录收集所有nfo文件并复制到输出目录中(不执行刮削操作)
+  * redo: 重做模式.执行正常刮削数据中出现的异常进行重新处理
+  * check: 检查模式.检查指定路径下的全部文件夹中演员元数据`person.nfo` 和 演员图片`folder.jpg` 是否存在并分别记录到 [no_nfo_tmdb_ids.txt](no_nfo_tmdb_ids.txt) 和 [no_image_tmdb_ids.txt](no_image_tmdb_ids.txt) 日志文件中
+    * `scan_path` 扫描目录路径使用 `__output` 路径
 
 **`目录结构说明`**
 - ./movies
@@ -82,7 +86,7 @@ pip3 install -r requirements.txt
 > 参数 `__mode` 为可选参数，具体请参考`参数说明`内容
 
 #### 直接修改脚本文件方式
-1. 修改 `main.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 、 `__output` 、 `__tmdb_token` 参数值
+1. 修改 `main.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 、 `__output` 、 `__tmdb_token` 、 `__mode`参数值
 2. 执行脚本
 ```python
 python3 main.py
@@ -92,7 +96,7 @@ python3 main.py
 > 注意参数 `--dir_path` 的值如果需要配置多个，请使用英文半角逗号拼接，不要有空格
 
 ```python
-python3 main.py --dir_path "example/movies","example/tvs" --output data/metadata/person --tmdb_token
+python3 main.py --dir_path "example/movies","example/tvs" --output data/metadata/person --tmdb_token tmdb_token --mode collect
 ```
 
 ### 补充
