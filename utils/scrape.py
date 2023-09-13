@@ -50,5 +50,5 @@ def __execute(log, dir_path, output, tmdb_token, language="zh-CN"):
                 else:
                     log.logger.info("当前路径已存在folder.jpg文件, 跳过刮削:{0}".format(__path_dir))
         # 移动完成刮削的nfo文件到complete文件夹
-        shutil.move(__file_path, "../complete")
+        shutil.move(__file_path, "complete/")
     log.logger.info("------------------- 结束获取演员元数据及海报 -------------------")
