@@ -111,6 +111,13 @@ python3 main.py
 python3 main.py --dir_path "example/movies","example/tvs" --output data/metadata/person --tmdb_token tmdb_token --mode collect
 ```
 
+#### 3. 后台执行
+> 可以结合前两种执行方式使用
+
+```shell
+nohup python3 main.py > nohup.log 2>&1 & echo &! > run.pid
+```
+
 ### 补充
 1. 运行提示 `no module name requests` 但是实际python环境中又安装了的：
 * 查看当前执行的python版本：```python --version```
