@@ -90,12 +90,12 @@ if __name__ == '__main__':
     sys_args = __get_sys_args(log=__log)
     # 扫描目录
     # __dir_path = ["/volume2/video/animation", "/volume2/video/children", "/volume2/video/documentary", "/volume2/video/movies", "/volume2/video/tvs", "/volume2/video/variety"]
-    __dir_path = ["data/data/metadata/nfo"]
+    __dir_path = ["data/metadata/nfo"]
     # 输出演员元数据目录
-    __output = "data/data/metadata/person"
+    __output = "data/metadata/person"
     # TMDB API TOKEN
     __tmdb_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTU4ODAxMGY5OTUwYWEyNThhYjFhYjJlMjI4NGVmYSIsInN1YiI6IjYxYmRmOGNjMzgzZGYyMDA0MjIzNDhjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RPG8F8AELlK7MgrXDR2U0YRv61VteZZ9ponilnkQqkE"
-    __mode = "redo"
+    __mode = "scrape"
     if len(sys_args.keys()) > 0:
         # 扫描目录
         __dir_path = sys_args["__dir_path"]
@@ -113,7 +113,9 @@ if __name__ == '__main__':
             __collect_nfo(__log, __real_dir_path, __output)
         if "scrape" == __mode:
             # 删除异常信息存储文件
-            os.remove("./error_tmdb_ids.txt")
+            error_file_path = "./error_tmdb_ids.txt"
+            if os.path.exists(error_file_path):
+                os.remove(error_file_path)
             __execute(log=__log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
         if "redo" == __mode:
             __redo(log=__log, output=__output, tmdb_token=__tmdb_token)

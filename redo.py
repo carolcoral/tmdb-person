@@ -43,9 +43,16 @@ def __redo(log, output, tmdb_token, language="zh-CN"):
 
 
 if __name__ == '__main__':
-    os.remove("./error_tmdb_ids.txt")
-    error_file = open("./error_tmdb_ids.txt", "w+")
-    for i in os.listdir("data/data/metadata/error"):
-        print(i)
-        error_file.write(i+",")
-    error_file.close()
+    os.remove("./no_nfo_tmdb_ids.txt")
+    os.remove("./no_image_tmdb_ids.txt")
+    error_file_nfo = open("./no_nfo_tmdb_ids.txt", "w+")
+    error_file_image = open("./no_image_tmdb_ids.txt", "w+")
+    for i in os.listdir("data/metadata/person"):
+        for files in os.listdir(os.path.join("data/metadata/person", i)):
+            print(files)
+            if "person.nfo" not in os.listdir(os.path.join("data/metadata/person", i, files)):
+                error_file_nfo.write(files + "\n")
+            if "folder.jpg" not in os.listdir(os.path.join("data/metadata/person", i, files)):
+                error_file_image.write(files + "\n")
+    error_file_nfo.close()
+    error_file_image.close()
