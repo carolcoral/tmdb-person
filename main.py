@@ -3,9 +3,9 @@
 import os
 import sys
 
-from collect_metadata import __collect_nfo
-from redo import __redo,__check
-from scrape import __execute
+from utils.collect_metadata import __collect_nfo
+from utils.redo import __redo,__check
+from utils.scrape import __execute
 from utils.LoggerUtil import Logger
 
 

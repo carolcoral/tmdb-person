@@ -1,6 +1,6 @@
 # tmdb-person
 
-![Version](https://img.shields.io/badge/version-1.0.2-blue)
+![Version](https://img.shields.io/badge/version-1.0.4-blue)
 ![Python](https://img.shields.io/badge/Python-3.9-green)
 ![TMDB](https://img.shields.io/badge/TMDB-V3-orign)
 ![https://blog.cnkj.site](https://img.shields.io/badge/Blog-blog.cnkj.site-blue)
@@ -66,7 +66,7 @@ pip3 install -r requirements.txt
   * scrape: 刮削模式.从扫描目录直接识别nfo文件并刮削元数据和图片到输出目录中
   * collect: 转移模式.从扫描目录收集所有nfo文件并复制到输出目录中(不执行刮削操作)
   * redo: 重做模式.执行正常刮削数据中出现的异常进行重新处理
-  * check: 检查模式.检查指定路径下的全部文件夹中演员元数据`person.nfo` 和 演员图片`folder.jpg` 是否存在并分别记录到 [no_nfo_tmdb_ids.txt](no_nfo_tmdb_ids.txt) 和 [no_image_tmdb_ids.txt](no_image_tmdb_ids.txt) 日志文件中
+  * check: 检查模式.检查指定路径下的全部文件夹中演员元数据`person.nfo` 和 演员图片`folder.jpg` 是否存在并分别记录到 [no_nfo_tmdb_ids.txt](./check/no_nfo_tmdb_ids.txt) 和 [no_image_tmdb_ids.txt](./check/no_image_tmdb_ids.txt) 日志文件中
     * `scan_path` 扫描目录路径使用 `__output` 路径
 
 **`目录结构说明`**

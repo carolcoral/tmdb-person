@@ -43,10 +43,14 @@ def __redo(log, output, tmdb_token, language="zh-CN"):
 
 
 def __check(scan_path="data/metadata/person"):
-    os.remove("./no_nfo_tmdb_ids.txt")
-    os.remove("./no_image_tmdb_ids.txt")
-    error_file_nfo = open("./no_nfo_tmdb_ids.txt", "w+")
-    error_file_image = open("./no_image_tmdb_ids.txt", "w+")
+    no_nfo_tmdb_ids = "../check/no_nfo_tmdb_ids.txt"
+    no_image_tmdb_ids = "../check/no_image_tmdb_ids.txt"
+    if os.path.exists(no_nfo_tmdb_ids):
+        os.remove(no_nfo_tmdb_ids)
+    if os.path.exists(no_image_tmdb_ids):
+        os.remove(no_image_tmdb_ids)
+    error_file_nfo = open(no_nfo_tmdb_ids, "w+")
+    error_file_image = open(no_image_tmdb_ids, "w+")
     for i in os.listdir(scan_path):
         for files in os.listdir(os.path.join(scan_path, i)):
             if "person.nfo" not in os.listdir(os.path.join(scan_path, i, files)):

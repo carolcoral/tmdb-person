@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import logging
 
 import requests
 import json
 import os
-from analyze import Make
+from utils.analyze import Make
 import utils.DateUtil as DateUtil
 
 # https://api.tmdb.org
