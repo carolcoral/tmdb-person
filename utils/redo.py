@@ -15,9 +15,9 @@ from tmdb import Tmdb
 
 
 def __redo(log, output, tmdb_token, language="zh-CN"):
-    log.logger.info("------------------- 开始重新刮削: {0} -------------------".format("./error_tmdb_ids.txt"))
+    log.logger.info("------------------- 开始重新刮削: {0} -------------------".format("../error_tmdb_ids.txt"))
 
-    with open("./error_tmdb_ids.txt", "r") as error_f:
+    with open("../error_tmdb_ids.txt", "r") as error_f:
         error_info = error_f.read()
         for info in error_info.split(","):
             info = info.strip()

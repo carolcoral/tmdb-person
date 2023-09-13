@@ -73,6 +73,9 @@ class Tmdb:
             elif "US" in translations_json.keys():
                 us = translations_json["US"]
                 plot = us["data"]["biography"]
+            else:
+                default_value = translations_json[0]
+                plot = default_value["data"]["biography"]
             plot = plot.replace("\n", "").replace("\r\n", "")
         return plot
 
@@ -130,7 +133,7 @@ class Tmdb:
                 os.remove(person_nfo)
                 # 非重做模式下记录刮削异常信息，重做模式下不再重复记录
                 if not redo:
-                    error_file = open("./error_tmdb_ids.txt", "w+")
+                    error_file = open("../error_tmdb_ids.txt", "w+")
                     error_file.write(os.path.basename(self.actor_path) + ",")
                     error_file.close()
                 self.log.logger.error(actor_data)
