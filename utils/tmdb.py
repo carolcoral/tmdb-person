@@ -73,9 +73,6 @@ class Tmdb:
             elif "US" in translations_json.keys():
                 us = translations_json["US"]
                 plot = us["data"]["biography"]
-            else:
-                default_value = translations_json[0]
-                plot = default_value["data"]["biography"]
             plot = plot.replace("\n", "").replace("\r\n", "")
         return plot
 
@@ -110,7 +107,7 @@ class Tmdb:
 
             actor_json["adult"] = "" if info_json["adult"] is None else str(info_json["adult"])
             # 不建议使用，存在gbk转码问题
-            # actor_json["alsoknownas"] = "" if info_json["also_known_as"] is None else info_json["also_known_as"]
+            actor_json["alsoknownas"] = "" if info_json["also_known_as"] is None else info_json["also_known_as"]
             actor_json["deathday"] = "" if info_json["deathday"] is None else str(info_json["deathday"])
             actor_json["gender"] = "" if info_json["gender"] is None else str(info_json["gender"])
             actor_json["homepage"] = "" if info_json["homepage"] is None else str(info_json["homepage"])
@@ -120,20 +117,21 @@ class Tmdb:
 
             actor_data = json.dumps(actor_json)
             person_nfo = os.path.join(self.actor_path, "person.nfo")
+            redo_path = "../redo/error_tmdb_ids.txt"
             try:
                 Make(xml_path=person_nfo, data=actor_data).create()
                 # 重做模式下删除重新成功刮削的信息
                 if redo:
-                    error_file_read = open("./error_tmdb_ids.txt", "r+")
+                    error_file_read = open(redo_path, "r+")
                     new_read = error_file_read.read().replace(os.path.basename(self.actor_path) + ",", "")
-                    error_file_w = open("./error_tmdb_ids.txt", "w")
+                    error_file_w = open(redo_path, "w")
                     error_file_w.write(new_read)
                     error_file_w.close()
             except Exception as e:
                 os.remove(person_nfo)
                 # 非重做模式下记录刮削异常信息，重做模式下不再重复记录
                 if not redo:
-                    error_file = open("../error_tmdb_ids.txt", "w+")
+                    error_file = open(redo_path, "w+")
                     error_file.write(os.path.basename(self.actor_path) + ",")
                     error_file.close()
                 self.log.logger.error(actor_data)

@@ -15,9 +15,10 @@ from utils.tmdb import Tmdb
 
 
 def __redo(log, output, tmdb_token, language="zh-CN"):
-    log.logger.info("------------------- 开始重新刮削: {0} -------------------".format("../error_tmdb_ids.txt"))
+    redo_path = "../redo/error_tmdb_ids.txt"
+    log.logger.info("------------------- 开始重新刮削: {0} -------------------".format(redo_path))
 
-    with open("../error_tmdb_ids.txt", "r") as error_f:
+    with open(redo_path, "r") as error_f:
         error_info = error_f.read()
         for info in error_info.split(","):
             info = info.strip()
@@ -39,12 +40,12 @@ def __redo(log, output, tmdb_token, language="zh-CN"):
                      language=language).get_actor_image()
             else:
                 log.logger.info("当前路径已存在folder.jpg文件, 跳过刮削:{0}".format(__path_dir))
-    log.logger.info("------------------- 结束重新刮削: {0} -------------------".format("./error_tmdb_ids.txt"))
+    log.logger.info("------------------- 结束重新刮削: {0} -------------------".format(redo_path))
 
 
 def __check(scan_path="data/metadata/person"):
-    no_nfo_tmdb_ids = "../check/no_nfo_tmdb_ids.txt"
-    no_image_tmdb_ids = "../check/no_image_tmdb_ids.txt"
+    no_nfo_tmdb_ids = "../redo/check/no_nfo_tmdb_ids.txt"
+    no_image_tmdb_ids = "../redo/check/no_image_tmdb_ids.txt"
     if os.path.exists(no_nfo_tmdb_ids):
         os.remove(no_nfo_tmdb_ids)
     if os.path.exists(no_image_tmdb_ids):

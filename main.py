@@ -4,7 +4,7 @@ import os
 import sys
 
 from utils.collect_metadata import __collect_nfo
-from utils.redo import __redo,__check
+from utils.redo import __redo, __check
 from utils.scrape import __execute
 from utils.LoggerUtil import Logger
 
@@ -78,10 +78,18 @@ def __get_sys_args(log):
     else:
         mode_value = sys.argv[arg_key["--mode"] + 1]
         if "collect" != mode_value and "scrape" != mode_value:
-            log.logger.error("请输入正确的脚本执行模式:{0}".format("collect(元数据文件转移)/scrape(元数据刮削)/redo(重新刮削异常元数据)"))
+            log.logger.error("请输入正确的脚本执行模式:{0}".format(
+                "collect(元数据文件转移)/scrape(元数据刮削)/redo(重新刮削异常元数据)"))
             raise SystemExit(1)
         arg_json["__mode"] = mode_value
     return arg_json
+
+
+def __create_default_dirs():
+    if not os.path.exists("./complete"):
+        os.makedirs("./complete")
+    if not os.path.exists("./redo"):
+        os.makedirs("./redo")
 
 
 if __name__ == '__main__':
@@ -107,6 +115,7 @@ if __name__ == '__main__':
     # 检查python版本
     __check_version(log=__log)
     # 开始执行主程序
+    __create_default_dirs()
     # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
     for __real_dir_path in __dir_path:
         if "collect" == __mode:
@@ -121,4 +130,3 @@ if __name__ == '__main__':
             __redo(log=__log, output=__output, tmdb_token=__tmdb_token)
         if "check" == __mode:
             __check(scan_path=__output)
-
