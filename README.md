@@ -66,10 +66,10 @@ pip3 install -r requirements.txt
 ### 相关说明
 
 **`参数说明`**
-* __dir_path: 目标文件夹路径
+* __dir_path: 目标文件夹路径. 绝对路径.
   * 例如电影存放于 `./movies/` 下，则该路径填写 `./movies` 的完整路径
   * 为了兼容 `电视剧` 中不刮削 `季` 中的 `.nfo` 内容，因此只刮削 `__dir_path` 路径下一层文件夹及当前层下的 `.nfo` 文件(兼容./movies 下同级存放的视频及.nfo文件)
-* __output: 演员信息、图片输出路径
+* __output: 演员信息、图片输出路径. 绝对路径.
 * __tmdb_token: TMDB 开发者API调用token
   * 登录 [TMDB](https://www.themoviedb.org/login)
   * 访问 [API](https://www.themoviedb.org/settings/api)
