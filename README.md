@@ -12,7 +12,7 @@
 ## ⚠️注意
 > 受不同国家语言限制，部分刮削内容可能出现`"GBK"`异常提示，请使用 **`MacOS`** 或者 **`Linux`** 环境执行脚本即可
 
-## 数据
+## 目录说明
 ### example
 > emby 存储于metadata/peopel 中的数据示例
 
@@ -25,9 +25,21 @@
 * example/movies/神出鬼没 (2023) - 2160p.nfo: 电影元数据
 
 ### data
-> 实际刮削的演员信息存放路径
+> 根据实际配置的 `__output` 路径自动生成.实际刮削后的演员信息和图片的存放路径.
 
-## 接口
+### complete
+> 自动生成.存放完成刮削后被转移过来的元数据信息.
+
+### redo
+> 自动生成.存放刮削过程中出现异常的元数据记录.
+
+### logs
+> 自动生成.存放脚本执行过程中产生的日志文件, 可通过配置进行修改.
+
+### utils
+> 主程序下各个脚本子程序代码.
+
+## 调用接口
 > https://developer.themoviedb.org/
 
 1. 演员信息刮削：https://developer.themoviedb.org/reference/person-details
@@ -35,7 +47,7 @@
 
 ## 使用
 * 环境：Python3.9
-> 最低要求`Python3.8`，如果需要xml中生成`standalone`参数则必须使用`Python3.9` 及以上版本
+> 最低要求`Python3.8`，如果需要xml中生成`standalone`参数则必须至少使用`Python3.9` 及以上版本
 
 ### 安装相关pip依赖包
 
@@ -45,13 +57,13 @@ pip3 install os
 pip3 install xml
 pip3 install json
 ```
-OR
+OR/或
 
 ```python
 pip3 install -r requirements.txt
 ```
 
-### 说明
+### 相关说明
 
 **`参数说明`**
 * __dir_path: 目标文件夹路径
@@ -85,14 +97,14 @@ pip3 install -r requirements.txt
 ### 运行
 > 参数 `__mode` 为可选参数，具体请参考`参数说明`内容
 
-#### 直接修改脚本文件方式
+#### 1. 直接修改脚本文件方式
 1. 修改 `main.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 、 `__output` 、 `__tmdb_token` 、 `__mode`参数值
 2. 执行脚本
 ```python
 python3 main.py
 ```
 
-#### 命令行执行
+#### 2. 命令行执行
 > 注意参数 `--dir_path` 的值如果需要配置多个，请使用英文半角逗号拼接，不要有空格
 
 ```python
