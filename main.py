@@ -97,12 +97,13 @@ if __name__ == '__main__':
     __log = __init_logger()
     sys_args = __get_sys_args(log=__log)
     # 扫描目录
-    __dir_path = ["/data/tmdb-person/data/metadata/nfo"]
+    # __dir_path = ["/volume2/video/animation", "/volume2/video/children", "/volume2/video/documentary", "/volume2/video/movies", "/volume2/video/tvs", "/volume2/video/variety"]
+    __dir_path = ["/Users/liuxuewen/workspace/self/gitea/tmdb-person/data/metadata/nfo"]
     # 输出演员元数据目录
-    __output = "/data/tmdb-person/data/metadata/person"
+    __output = "/Users/liuxuewen/workspace/self/gitea/tmdb-person/data/metadata/person"
     # TMDB API TOKEN
-    __tmdb_token = "__tmdb_token"
-    __mode = "collect"
+    __tmdb_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTU4ODAxMGY5OTUwYWEyNThhYjFhYjJlMjI4NGVmYSIsInN1YiI6IjYxYmRmOGNjMzgzZGYyMDA0MjIzNDhjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RPG8F8AELlK7MgrXDR2U0YRv61VteZZ9ponilnkQqkE"
+    __mode = "scrape"
     if len(sys_args.keys()) > 0:
         # 扫描目录
         __dir_path = sys_args["__dir_path"]
