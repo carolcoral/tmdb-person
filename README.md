@@ -118,6 +118,32 @@ python3 main.py --dir_path "example/movies","example/tvs" --output data/metadata
 nohup python3 main.py > nohup.log 2>&1 & echo &! > run.pid
 ```
 
+### 多线程刮削
+> 前置要求：需要先执行main.py脚本的"collect"模式收集nfo元数据文件
+
+#### 1. 直接修改脚本文件方式
+1. 修改 `multi_thread.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 、 `__output` 、 `__tmdb_token` 、 `__mode`参数值
+2. 执行脚本
+```python
+python3 multi_thread.py
+```
+
+#### 2. 命令行执行
+> 注意参数 `--dir_path` 的值如果需要配置多个，请使用英文半角逗号拼接，不要有空格
+
+```python
+python3 multi_thread.py --dir_path "example/movies","example/tvs" --output data/metadata/person --tmdb_token tmdb_token
+```
+
+#### 3. 后台执行
+> 可以结合前两种执行方式使用
+
+```shell
+nohup python3 multi_thread.py > nohup.log 2>&1 & echo &! > run.pid
+```
+
+
+
 ### 补充
 1. 运行提示 `no module name requests` 但是实际python环境中又安装了的：
 * 查看当前执行的python版本：```python --version```

@@ -5,7 +5,7 @@ import sys
 
 from utils.collect_metadata import __collect_nfo
 from utils.redo import __redo, __check
-from utils.scrape import __execute
+from utils.scrape import Scrape
 from utils.LoggerUtil import Logger
 
 
@@ -82,6 +82,12 @@ def __get_sys_args(log):
                 "collect(元数据文件转移)/scrape(元数据刮削)/redo(重新刮削异常元数据)"))
             raise SystemExit(1)
         arg_json["__mode"] = mode_value
+    if "--language" not in arg_key.keys():
+        log.logger.warn("未输入脚本执行语言，默认使用中文简体语言格式:{0}".format("--language"))
+        arg_json["__language"] = "zh-CN"
+    else:
+        mode_value = sys.argv[arg_key["--language"] + 1]
+        arg_json["__language"] = mode_value
     return arg_json
 
 
@@ -92,18 +98,40 @@ def __create_default_dirs():
         os.makedirs("./redo")
 
 
+def __master_execute(log, dir_path, output, tmdb_token, mode, language="zh-CN"):
+    # 检查python版本
+    __check_version(log=log)
+    # 开始执行主程序
+    __create_default_dirs()
+    # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
+    for __real_dir_path in dir_path:
+        if "collect" == mode:
+            __collect_nfo(log, __real_dir_path, output)
+        if "scrape" == mode:
+            # 删除异常信息存储文件
+            error_file_path = "./error_tmdb_ids.txt"
+            if os.path.exists(error_file_path):
+                os.remove(error_file_path)
+            scrape = Scrape(log=log, dir_path=__real_dir_path, output=output, tmdb_token=tmdb_token, language=language)
+            scrape.start()
+        if "redo" == mode:
+            __redo(log=log, output=output, tmdb_token=tmdb_token, language=language)
+        if "check" == mode:
+            __check(scan_path=output)
+
+
 if __name__ == '__main__':
     # 初始化日志
     __log = __init_logger()
     sys_args = __get_sys_args(log=__log)
     # 扫描目录
-    # __dir_path = ["/volume2/video/animation", "/volume2/video/children", "/volume2/video/documentary", "/volume2/video/movies", "/volume2/video/tvs", "/volume2/video/variety"]
-    __dir_path = ["/Users/liuxuewen/workspace/self/gitea/tmdb-person/data/metadata/nfo"]
+    __dir_path = ["/data/tmdb-person/data/metadata/nfo"]
     # 输出演员元数据目录
-    __output = "/Users/liuxuewen/workspace/self/gitea/tmdb-person/data/metadata/person"
+    __output = "/data/tmdb-person/data/metadata/person"
     # TMDB API TOKEN
     __tmdb_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTU4ODAxMGY5OTUwYWEyNThhYjFhYjJlMjI4NGVmYSIsInN1YiI6IjYxYmRmOGNjMzgzZGYyMDA0MjIzNDhjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RPG8F8AELlK7MgrXDR2U0YRv61VteZZ9ponilnkQqkE"
     __mode = "scrape"
+    __language = "zh-CN"
     if len(sys_args.keys()) > 0:
         # 扫描目录
         __dir_path = sys_args["__dir_path"]
@@ -112,21 +140,6 @@ if __name__ == '__main__':
         # TMDB API TOKEN
         __tmdb_token = sys_args["__tmdb_token"]
         __mode = sys_args["__mode"]
-    # 检查python版本
-    __check_version(log=__log)
-    # 开始执行主程序
-    __create_default_dirs()
-    # 默认 language="zh-CN" (简体中文),可以通过修改 "language" 的值变更获取元数据的语言类别
-    for __real_dir_path in __dir_path:
-        if "collect" == __mode:
-            __collect_nfo(__log, __real_dir_path, __output)
-        if "scrape" == __mode:
-            # 删除异常信息存储文件
-            error_file_path = "./error_tmdb_ids.txt"
-            if os.path.exists(error_file_path):
-                os.remove(error_file_path)
-            __execute(log=__log, dir_path=__real_dir_path, output=__output, tmdb_token=__tmdb_token)
-        if "redo" == __mode:
-            __redo(log=__log, output=__output, tmdb_token=__tmdb_token)
-        if "check" == __mode:
-            __check(scan_path=__output)
+        __language = sys_args["__language"]
+    __master_execute(log=__log, dir_path=__dir_path, output=__output, tmdb_token=__tmdb_token, mode=__mode,
+                     language=__language)
