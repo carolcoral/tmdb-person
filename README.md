@@ -122,7 +122,7 @@ nohup python3 main.py > nohup.log 2>&1 & echo &! > run.pid
 > 前置要求：需要先执行main.py脚本的"collect"模式收集nfo元数据文件
 
 #### 1. 直接修改脚本文件方式
-1. 修改 `multi_thread.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 、 `__output` 、 `__tmdb_token` 、 `__mode`参数值
+1. 修改 `multi_thread.py` 文件中 `if __name__ == '__main__':` 方法中 `__dir_path` 、 `__output` 、 `__tmdb_token` 参数值
 2. 执行脚本
 ```python
 python3 multi_thread.py
@@ -147,4 +147,4 @@ nohup python3 multi_thread.py > nohup.log 2>&1 & echo &! > run.pid
 ### 补充
 1. 运行提示 `no module name requests` 但是实际python环境中又安装了的：
 * 查看当前执行的python版本：```python --version```
-* 例如 ```python3 --version``` 显示的是3.8，但是实际又3.9版本的环境，可以使用 ```python3.9 -m pip install requests``` 进行指定python版本的依赖包安装
+* 例如 ```python3 --version``` 显示的是3.8，但是实际有3.9版本的环境，可以使用 ```python3.9 -m pip install requests``` 进行指定python版本的依赖包安装
