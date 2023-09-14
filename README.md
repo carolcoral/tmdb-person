@@ -1,6 +1,6 @@
 # tmdb-person
 
-![Version](https://img.shields.io/badge/version-1.0.4-blue)
+![Version](https://img.shields.io/badge/version-1.0.5-blue)
 ![Python](https://img.shields.io/badge/Python-3.9-green)
 ![TMDB](https://img.shields.io/badge/TMDB-V3-orign)
 ![https://blog.cnkj.site](https://img.shields.io/badge/Blog-blog.cnkj.site-blue)
