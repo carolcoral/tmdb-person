@@ -67,6 +67,6 @@ class Scrape(threading.Thread):
                     else:
                         self.log.logger.info("当前路径已存在folder.jpg文件, 跳过刮削:{0}".format(__path_dir))
             # 移动完成刮削的nfo文件到complete文件夹
-            shutil.move(__file_path, "complete/")
+            shutil.copy(__file_path, "complete/")
         self.log.logger.info(
             "------------------- 结束获取演员元数据及海报:{0} -------------------".format(self.thread_id))
