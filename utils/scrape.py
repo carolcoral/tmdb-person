@@ -10,6 +10,7 @@ from utils.tmdb import Tmdb
 
 thread_lock = threading.Lock()
 
+
 class Scrape(threading.Thread):
     def __init__(self, log, dir_path, output, tmdb_token, language="zh-CN", thread_id=uuid.uuid4()):
         threading.Thread.__init__(self)
@@ -21,13 +22,14 @@ class Scrape(threading.Thread):
         self.language = language
 
     def run(self):
-        self.log.logger.info("------------------- 开始获取演员元数据及海报:{0} -------------------".format(self.thread_id))
+        self.log.logger.info(
+            "------------------- 开始获取演员元数据及海报:{0} -------------------".format(self.thread_id))
         __file_paths = []
         self.log.logger.info("当前执行元数据刮削识别的根文件夹:{0}".format(self.dir_path))
         for folder in os.listdir(self.dir_path):
             __folder2 = os.path.join(self.dir_path, folder)
             # 判断是否文件夹
-            if os.path.isdir(__folder2):
+            if os.path.isdir(__folder2) and "Season" not in folder:
                 for nfo_file in os.listdir(__folder2):
                     __child_file_path = os.path.join(__folder2, nfo_file)
                     if ".nfo" in os.path.basename(__child_file_path):
@@ -66,4 +68,5 @@ class Scrape(threading.Thread):
                         self.log.logger.info("当前路径已存在folder.jpg文件, 跳过刮削:{0}".format(__path_dir))
             # 移动完成刮削的nfo文件到complete文件夹
             shutil.move(__file_path, "complete/")
-        self.log.logger.info("------------------- 结束获取演员元数据及海报:{0} -------------------".format(self.thread_id))
+        self.log.logger.info(
+            "------------------- 结束获取演员元数据及海报:{0} -------------------".format(self.thread_id))
