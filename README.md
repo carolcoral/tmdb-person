@@ -18,11 +18,7 @@ shutil.copy(__file_path, "complete/")
 ```
 
 ## 目录说明
-### example
-> emby 存储于metadata/peopel 中的数据示例
-
 > 电视剧tvs 和 电影movies 的保存 `.nfo` 命名格式不一样。movies的 `.nfo` 文件以电影名为前缀， tvs 统一以 `tvshow.nfo` 命名
-
 
 ### data
 > 根据实际配置的 `__output` 路径自动生成.实际刮削后的演员信息和图片的存放路径.
