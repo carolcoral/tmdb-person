@@ -10,7 +10,12 @@
 > 解决docker部署的emby服务无法正常刮削到视频演员信息问题(通过nastool可以正常刮削到视频信息)
 
 ## ⚠️注意
-> 受不同国家语言限制，部分刮削内容可能出现`"GBK"`异常提示，请使用 **`MacOS`** 或者 **`Linux`** 环境执行脚本即可
+> 1. 受不同国家语言限制，部分刮削内容可能出现`"GBK"`异常提示，请使用 **`MacOS`** 或者 **`Linux`** 环境执行脚本即可.
+> 2. 如果采用非批量的执行方式，即直接使用 `scrape` 模式进行刮削而没有先进行 `collect` 模式进行元数据收集后再进行刮削.
+> 该情况下为避免重名文件导致的跳过刮削, 请注释 [scrape.py](utils%2Fscrape.py) 文件中第 `70` 行代码:
+```python
+shutil.copy(__file_path, "complete/")
+```
 
 ## 目录说明
 ### example
@@ -18,11 +23,6 @@
 
 > 电视剧tvs 和 电影movies 的保存 `.nfo` 命名格式不一样。movies的 `.nfo` 文件以电影名为前缀， tvs 统一以 `tvshow.nfo` 命名
 
-* example/metadata/person/a: 英文演员信息
-* example/metadata/person/张: 中文演员信息
-* example/metadata/person/person.nfo: 演员元数据
-* example/tvs/一生一世/tvshow.nfo: 电视剧元数据
-* example/movies/神出鬼没 (2023) - 2160p.nfo: 电影元数据
 
 ### data
 > 根据实际配置的 `__output` 路径自动生成.实际刮削后的演员信息和图片的存放路径.
