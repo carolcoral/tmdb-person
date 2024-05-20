@@ -46,7 +46,7 @@ class Make:
             else:
                 value = doc.createTextNode(str(self.data[key]))
             key_node.appendChild(value)
-        f = open(file=self.xml_path, mode="w")
+        f = open(file=self.xml_path, mode="w", encoding='UTF8')
         python_version = sys.version_info.minor
         if 8 == python_version:
             doc.writexml(writer=f, addindent="  ", newl="\n", encoding="utf-8")
